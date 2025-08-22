@@ -8,3 +8,4 @@ aiohttp>=3.8.5
 requests>=2.31.0
 gunicorn==20.1.0
 flask==2.3.3
+line-bot-sdk==2.3.0
