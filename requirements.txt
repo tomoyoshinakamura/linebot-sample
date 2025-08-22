@@ -6,3 +6,4 @@ aiohttp>=3.8.5
 
 # 他の依存は必要に応じて最新版に
 requests>=2.31.0
+gunicorn==20.1.0
