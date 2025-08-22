@@ -2,7 +2,7 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
-
+from urllib.parse import quote_plus
 import os
 
 app = Flask(__name__)
@@ -30,34 +30,17 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-from flask import Flask, request, jsonify
-from urllib.parse import quote_plus
+    # LINEで受信したメッセージを検索キーワードにする
+    keyword = event.message.text.strip()
+    if not keyword:
+        reply_text = "検索するキーワードを送信してください。"
+    else:
+        encoded_keyword = quote_plus(keyword)
+        search_url = f"https://www.x-jpn.co.jp/?item_work=&item_series=&item_maker=&s={encoded_keyword}"
+        reply_text = f"検索結果はこちら:\n{search_url}"
 
-app = Flask(__name__)
-
-@app.route("/search_url", methods=["GET"])
-def search_url():
-    query = request.args.get("query")  # 商品名でもJANコードでもOK
-    if not query:
-        return jsonify({"error": "query parameter is required"}), 400
-
-    # URLエンコードして検索用URLを作成
-    encoded_query = quote_plus(query)
-    search_url = f"https://www.x-jpn.co.jp/?item_work=&item_series=&item_maker=&s={encoded_query}"
-
-    return jsonify({"search_url": search_url})
+    # LINEに返信
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
-    
-
-
-    
-    # ここでスクレイピングやデータベース検索を入れることが可能
-    # 今は受信したメッセージをそのまま返すサンプル
-    # text = event.message.text
-    # reply_text = f"あなたのメッセージ: {text}"
-    # line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
-
-# if __name__ == "__main__":
-#     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
