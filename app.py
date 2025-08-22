@@ -7,8 +7,8 @@ import os
 
 app = Flask(__name__)
 
-LINE_CHANNEL_ACCESS_TOKEN = os.environ.get("hvdKUx0crJpGbVOTXroEKWzRUt2TMMjdjcDM3io6KjVGkTkUENkV7yEtj/Q54B3mLCRneZ7kyo5lQmqbr2F69miwofzlPJbwXYUipoaJCEQd4eYsfmmsKZV5PNsFtXm9e/PtwxXPHVf3fUbIiycucwdB04t89/1O/w1cDnyilFU=")
-LINE_CHANNEL_SECRET = os.environ.get("2d53f3c45d710c572ed8c1493fbc52b7")
+LINE_CHANNEL_ACCESS_TOKEN = os.environ.get("LINE_CHANNEL_ACCESS_TOKEN")
+LINE_CHANNEL_SECRET = os.environ.get("LINE_CHANNEL_SECRET")
 
 if not LINE_CHANNEL_ACCESS_TOKEN or not LINE_CHANNEL_SECRET:
     raise ValueError("LINE Channel Access Token / Secret が設定されていません。")
